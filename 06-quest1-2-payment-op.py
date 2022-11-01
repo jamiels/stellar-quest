@@ -15,9 +15,9 @@ tx = (get_txb(quest_ac)
             amount='100'
     ).build())
 
+tx.sign(quest_kp)
 display_tx_results(
-    server.submit_transaction(
-        tx.sign(quest_kp)
-))
+    server.submit_transaction(tx)      
+)
 
 
