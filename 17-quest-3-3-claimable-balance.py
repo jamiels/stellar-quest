@@ -15,36 +15,29 @@ claimant = Claimant(claimant_kp.public_key,
 
 questReclaimant = Claimant(quest_kp.public_key,ClaimPredicate.predicate_unconditional()) # reclaim whenever
 
-txb = (get_txb(quest_ac)
-    .append_create_claimable_balance_op (
-        asset=Asset.native(),
-        amount='100',
-        claimants=[claimant,questReclaimant],
-        source=claimant_kp.public_key
-    )   
-) 
+tx = (get_txb(quest_ac)
+        .append_create_claimable_balance_op (
+            asset=Asset.native(),
+            amount='100',
+            claimants=[claimant,questReclaimant]
+        )   
+    ).build()
 
-tx = txb.build()
 tx.sign(quest_kp)
-tx.sign(claimant_kp)
 tx_result = server.submit_transaction(tx)
 display_tx_results(tx_result)
 
 # Make claim
 res = server.claimable_balances().for_claimant(claimant_kp.public_key).limit(1).call()
-print('res --- ')
-print(res)
 claimable_balance_id = res['_embedded']['records'][0]['id']
 print('claimable bal id',claimable_balance_id)
 input('pause...') # let 3 seconds elapse
 claimant_ac = server.load_account(claimant_kp)
-txb = (get_txb(claimant_ac)
-    .append_claim_claimable_balance_op (
-        balance_id=claimable_balance_id
-    )   
-) 
+tx = (get_txb(claimant_ac)
+        .append_claim_claimable_balance_op (
+            balance_id=claimable_balance_id
+        )   
+    ).build() 
 
-tx = txb.build()
 tx.sign(claimant_kp)
-tx_result = server.submit_transaction(tx)
-display_tx_results(tx_result)
+display_tx_results(server.submit_transaction(tx))
