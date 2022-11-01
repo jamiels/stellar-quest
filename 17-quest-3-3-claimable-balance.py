@@ -8,12 +8,18 @@ claimant_kp = gen_keypair()
 fund(quest_kp, claimant_kp)
 
 quest_ac = server.load_account(quest_kp)
+claimant_ac = server.load_account(claimant_kp)
 
-claimant = Claimant(claimant_kp.public_key,
-                ClaimPredicate.predicate_not(
-                    ClaimPredicate.predicate_before_relative_time(seconds=3)))
+claimant = Claimant(
+                    destination=claimant_kp.public_key,
+                    predicate=ClaimPredicate.predicate_not(
+                        ClaimPredicate.predicate_before_relative_time(seconds=3))
+                    )
 
-questReclaimant = Claimant(quest_kp.public_key,ClaimPredicate.predicate_unconditional()) # reclaim whenever
+questReclaimant = Claimant(
+                    destination=quest_kp.public_key,
+                    predicate=ClaimPredicate.predicate_unconditional()
+                    ) # reclaim whenever
 
 tx = (get_txb(quest_ac)
         .append_create_claimable_balance_op (
@@ -32,7 +38,7 @@ res = server.claimable_balances().for_claimant(claimant_kp.public_key).limit(1).
 claimable_balance_id = res['_embedded']['records'][0]['id']
 print('claimable bal id',claimable_balance_id)
 input('pause...') # let 3 seconds elapse
-claimant_ac = server.load_account(claimant_kp)
+
 tx = (get_txb(claimant_ac)
         .append_claim_claimable_balance_op (
             balance_id=claimable_balance_id
