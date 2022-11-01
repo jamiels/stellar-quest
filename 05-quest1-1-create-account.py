@@ -12,7 +12,5 @@ tx = (get_txb(quest_ac)
             starting_balance='1000'
     ).build())
 tx.sign(quest_kp)
-display_tx_results(
-    server.submit_transaction(tx)      
-)
+display_tx_results(server.submit_transaction(tx))
 

@@ -16,8 +16,6 @@ tx = (get_txb(quest_ac)
     ).build())
 
 tx.sign(quest_kp)
-display_tx_results(
-    server.submit_transaction(tx)      
-)
+display_tx_results(server.submit_transaction(tx))
 
 
