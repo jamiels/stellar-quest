@@ -2,10 +2,11 @@ from stellar_sdk import *
 from tools import *
 
 server, base_fee = get_server()
-quest_kp = Keypair.from_secret('SAPOVNTT2AEELNHN2HTSVH3UUR3MOYNN2RZ6SFUCQDEO7H5HEOP52JMX')
+quest_kp = Keypair.from_secret('SDRA23KM65MDINUNURFX2DNMES72SFHIQQOLC5AFDVWA6DFUXO3ROJPD')
 claimant_kp = gen_keypair()
 
-fund(quest_kp, claimant_kp)
+res = fund(quest_kp, claimant_kp)
+print(res)
 
 quest_ac = server.load_account(quest_kp)
 claimant_ac = server.load_account(claimant_kp)

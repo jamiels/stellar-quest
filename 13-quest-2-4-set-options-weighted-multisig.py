@@ -12,7 +12,7 @@ fund(quest_kp)
 
 quest_ac = server.load_account(quest_kp)
 
-txb = (get_txb(quest_ac)
+tx = (get_txb(quest_ac)
         .append_set_options_op(
             master_weight=1,
             low_threshold=5,
@@ -27,9 +27,8 @@ txb = (get_txb(quest_ac)
             signer=Signer(
                 SignerKey(third_kp.raw_public_key(),SignerKeyType.SIGNER_KEY_TYPE_ED25519), weight=2)
         )              
-) 
+).build()
             
-tx = txb.build()
 tx.sign(quest_kp)
 tx.sign(second_kp)
 tx.sign(third_kp)
